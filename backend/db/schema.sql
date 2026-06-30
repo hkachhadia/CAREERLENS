@@ -1,4 +1,4 @@
--- CareerLens PostgreSQL schema for storing analysis history
+-- CareerLift PostgreSQL schema for storing analysis history
 -- Run with: psql "$DATABASE_URL" -f backend/db/schema.sql
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";

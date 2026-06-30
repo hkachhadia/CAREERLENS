@@ -1,6 +1,6 @@
-# CareerLens
+# CareerLift
 
-CareerLens starter project using:
+CareerLift starter project using:
 
 - Frontend: React (Vite)
 - Backend: Node.js + Express
@@ -90,7 +90,7 @@ Backend health check: `http://localhost:5000/api/health`
   "name": "Vaide",
   "role": "Full Stack Developer",
   "skills": ["React", "Node.js", "SQL", "Docker"],
-  "projects": ["CareerLens", "Portfolio Website"],
+  "projects": ["CareerLift", "Portfolio Website"],
   "summary": "Built end-to-end apps and collaborated in team projects.",
   "github": { "username": "octocat" },
   "codingProfiles": { "leetcode": "sample_user", "codeforces": "tourist" }
@@ -116,7 +116,7 @@ If Gemini is unavailable, the endpoint automatically returns a heuristic fallbac
 
 ## Scoring model (role/company benchmark)
 
-CareerLens now includes a deterministic benchmark scoring model to compare user skills with role or company expectations.
+CareerLift now includes a deterministic benchmark scoring model to compare user skills with role or company expectations.
 
 ### Benchmark endpoint
 

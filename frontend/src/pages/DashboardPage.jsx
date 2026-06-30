@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { API_BASE_URL } from "../config";
 
 const DEFAULT_SKILLS = ["React", "Node.js", "SQL", "Git", "Problem Solving"];
-const DEFAULT_PROJECTS = ["CareerLens Dashboard", "Portfolio Revamp"];
+const DEFAULT_PROJECTS = ["CareerLift Dashboard", "Portfolio Revamp"];
 const REFRESH_INTERVAL_MS = 20000;
 
 const buildTrendPath = (points, width, height) => {
@@ -28,6 +28,10 @@ function DashboardPage() {
   const [analysisData, setAnalysisData] = useState(null);
   const [benchmarkData, setBenchmarkData] = useState(null);
   const [history, setHistory] = useState([]);
+  const [providerStatus, setProviderStatus] = useState({
+    google: { configured: false },
+    github: { configured: false }
+  });
 
   useEffect(() => {
     const loadSession = async () => {
@@ -62,7 +66,7 @@ function DashboardPage() {
         .filter(Boolean);
 
       const payload = {
-        name: currentUser?.displayName || "CareerLens User",
+        name: currentUser?.displayName || "CareerLift User",
         role,
         skills: parsedSkills.length ? parsedSkills : DEFAULT_SKILLS,
         projects: DEFAULT_PROJECTS,
@@ -108,11 +112,26 @@ function DashboardPage() {
     }
   };
 
+  const loadProviderStatus = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/auth/providers`);
+      if (!response.ok) return;
+      const data = await response.json();
+      setProviderStatus(data);
+    } catch (_error) {
+      // Keep UI working even if this optional call fails.
+    }
+  };
+
   useEffect(() => {
     runAnalyticsRefresh();
     const timer = setInterval(runAnalyticsRefresh, REFRESH_INTERVAL_MS);
     return () => clearInterval(timer);
   }, [role, skillsInput, currentUser?.displayName]);
+
+  useEffect(() => {
+    loadProviderStatus();
+  }, []);
 
   const handleLogout = async () => {
     await fetch(`${API_BASE_URL}/api/auth/logout`, {
@@ -120,6 +139,10 @@ function DashboardPage() {
       credentials: "include"
     });
     setCurrentUser(null);
+  };
+
+  const handleUpdateGoals = () => {
+    runAnalyticsRefresh();
   };
 
   const categoryScores = analysisData?.analysis?.categoryScores || {
@@ -148,11 +171,29 @@ function DashboardPage() {
             Logout
           </button>
         ) : (
-          <button className="btn btn-primary" type="button">
+          <button className="btn btn-primary" type="button" onClick={handleUpdateGoals}>
             Update Goals
           </button>
         )}
       </div>
+
+      <article className="panel status-panel">
+        <h3>Connection Status</h3>
+        <div className="status-grid">
+          <p>
+            Google OAuth:{" "}
+            <strong className={providerStatus.google?.configured ? "ok" : "warn"}>
+              {providerStatus.google?.configured ? "Configured" : "Not configured"}
+            </strong>
+          </p>
+          <p>
+            GitHub OAuth:{" "}
+            <strong className={providerStatus.github?.configured ? "ok" : "warn"}>
+              {providerStatus.github?.configured ? "Configured" : "Not configured"}
+            </strong>
+          </p>
+        </div>
+      </article>
 
       <article className="panel controls-panel">
         <h3>Real-time Analytics Controls</h3>

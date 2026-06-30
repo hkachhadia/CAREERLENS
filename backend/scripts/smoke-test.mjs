@@ -41,7 +41,7 @@ await check("skills analytics endpoint", async () => {
       name: "Smoke Test User",
       role: "Full Stack Developer",
       skills: ["React", "Node.js", "SQL", "Problem Solving"],
-      projects: ["CareerLens"],
+      projects: ["CareerLift"],
       summary: "Built end-to-end full-stack apps."
     })
   });

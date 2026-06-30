@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="app-shell">
       <header className="top-nav">
-        <div className="brand">CareerLens</div>
+        <div className="brand">CareerLift</div>
         <nav className="nav-links">
           <Link to="/">Home</Link>
           <Link to="/login">Login</Link>

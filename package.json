@@ -1,8 +1,8 @@
 {
-  "name": "careerlens",
+  "name": "careerlift",
   "private": true,
   "version": "0.1.0",
-  "description": "CareerLens monorepo with React frontend and Node.js backend",
+  "description": "CareerLift monorepo with React frontend and Node.js backend",
   "scripts": {
     "dev:frontend": "npm --prefix frontend run dev",
     "dev:backend": "npm --prefix backend run dev",

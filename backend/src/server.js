@@ -12,13 +12,19 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
+const appName = "CareerLift";
 const frontendUrl = process.env.FRONTEND_URL || "http://localhost:5173";
+const backendPublicUrl = process.env.BACKEND_PUBLIC_URL || `http://localhost:${port}`;
 const isProduction = process.env.NODE_ENV === "production";
 const githubToken = process.env.GITHUB_API_TOKEN || "";
 const geminiApiKey = process.env.GEMINI_API_KEY || "";
 const geminiModelName = process.env.GEMINI_MODEL || "gemini-1.5-flash";
 const hasGoogleOAuth = Boolean(process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET);
 const hasGithubOAuth = Boolean(process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET);
+const allowedOrigins = [
+  frontendUrl,
+  ...(process.env.FRONTEND_URLS ? process.env.FRONTEND_URLS.split(",").map((item) => item.trim()) : [])
+].filter(Boolean);
 
 const requiredOauthEnvVars = [
   "GOOGLE_CLIENT_ID",
@@ -36,7 +42,15 @@ if (missingVars.length > 0) {
 
 app.use(
   cors({
-    origin: frontendUrl,
+    origin(origin, callback) {
+      if (!origin) {
+        return callback(null, true);
+      }
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error(`Origin ${origin} is not allowed by CORS`));
+    },
     credentials: true
   })
 );
@@ -44,7 +58,7 @@ app.use(express.json());
 app.set("trust proxy", 1);
 app.use(
   session({
-    name: "careerlens.sid",
+    name: "careerlift.sid",
     secret: process.env.SESSION_SECRET || "replace-me-in-env",
     resave: false,
     saveUninitialized: false,
@@ -74,7 +88,7 @@ if (hasGoogleOAuth) {
         clientSecret: process.env.GOOGLE_CLIENT_SECRET,
         callbackURL:
           process.env.GOOGLE_CALLBACK_URL ||
-          "http://localhost:5000/api/auth/google/callback"
+          `${backendPublicUrl}/api/auth/google/callback`
       },
       (_accessToken, _refreshToken, profile, done) => {
         const normalizedUser = {
@@ -98,7 +112,7 @@ if (hasGithubOAuth) {
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
         callbackURL:
           process.env.GITHUB_CALLBACK_URL ||
-          "http://localhost:5000/api/auth/github/callback"
+          `${backendPublicUrl}/api/auth/github/callback`
       },
       (_accessToken, _refreshToken, profile, done) => {
         const normalizedUser = {
@@ -118,7 +132,24 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get("/api/health", (_req, res) => {
-  res.json({ status: "ok", service: "CareerLens API" });
+  res.json({ status: "ok", service: `${appName} API` });
+});
+
+app.get("/api/auth/providers", (_req, res) => {
+  res.json({
+    google: {
+      configured: hasGoogleOAuth,
+      callbackUrl:
+        process.env.GOOGLE_CALLBACK_URL ||
+        `${backendPublicUrl}/api/auth/google/callback`
+    },
+    github: {
+      configured: hasGithubOAuth,
+      callbackUrl:
+        process.env.GITHUB_CALLBACK_URL ||
+        `${backendPublicUrl}/api/auth/github/callback`
+    }
+  });
 });
 
 const toScore = (value) => Math.max(0, Math.min(100, Math.round(Number(value) || 0)));
@@ -395,7 +426,7 @@ ${JSON.stringify(payload, null, 2)}
 const buildGithubHeaders = () => {
   const headers = {
     Accept: "application/vnd.github+json",
-    "User-Agent": "CareerLens-App"
+    "User-Agent": "CareerLift-App"
   };
 
   if (githubToken) {
@@ -545,7 +576,7 @@ const scrapeHackerRankProfile = async (username) => {
   const profileUrl = `https://www.hackerrank.com/profile/${encodeURIComponent(username)}`;
   const response = await fetch(profileUrl, {
     headers: {
-      "User-Agent": "Mozilla/5.0 CareerLens"
+      "User-Agent": "Mozilla/5.0 CareerLift"
     }
   });
   if (!response.ok) {
@@ -822,6 +853,7 @@ app.post("/api/auth/logout", (req, res, next) => {
         return next(sessionError);
       }
       res.clearCookie("careerlens.sid");
+      res.clearCookie("careerlift.sid");
       return res.status(204).send();
     });
   });
@@ -833,5 +865,5 @@ app.use((error, _req, res, _next) => {
 });
 
 app.listen(port, () => {
-  console.log(`CareerLens backend running on http://localhost:${port}`);
+  console.log(`${appName} backend running on http://localhost:${port}`);
 });

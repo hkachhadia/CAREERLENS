@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { API_BASE_URL } from "../config";
 
 const DEFAULT_SKILLS = ["React", "Node.js", "SQL", "Git", "Problem Solving"];

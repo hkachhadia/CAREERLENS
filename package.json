@@ -1,0 +1,12 @@
+{
+  "name": "careerlens",
+  "private": true,
+  "version": "0.1.0",
+  "description": "CareerLens monorepo with React frontend and Node.js backend",
+  "scripts": {
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "start:backend": "npm --prefix backend run start",
+    "build:frontend": "npm --prefix frontend run build"
+  }
+}

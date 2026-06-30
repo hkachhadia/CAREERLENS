@@ -1,0 +1,248 @@
+:root {
+  font-family: Inter, "Segoe UI", Roboto, Arial, sans-serif;
+  color: #0f172a;
+  background: #f8fafc;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: #0f172a;
+  color: #e2e8f0;
+}
+
+.brand {
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+}
+
+.nav-links a {
+  color: #e2e8f0;
+  text-decoration: none;
+}
+
+.page-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.landing h1 {
+  font-size: clamp(2rem, 4vw, 3rem);
+  margin-bottom: 0.5rem;
+}
+
+.eyebrow {
+  color: #2563eb;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  max-width: 700px;
+  color: #334155;
+}
+
+.hero-actions {
+  margin-top: 1.5rem;
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: #ffffff;
+}
+
+.btn-secondary {
+  background: #e2e8f0;
+  color: #1e293b;
+}
+
+.auth-card {
+  max-width: 420px;
+  margin: 1rem auto;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+}
+
+.oauth-actions {
+  margin-top: 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.auth-error {
+  margin-top: 0.75rem;
+  color: #b91c1c;
+  font-size: 0.9rem;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.wide-panel {
+  grid-column: span 2;
+}
+
+.controls-panel {
+  margin-bottom: 1rem;
+}
+
+.controls-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.controls-grid label {
+  display: grid;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  color: #334155;
+}
+
+.controls-grid input {
+  border: 1px solid #cbd5e1;
+  border-radius: 0.5rem;
+  padding: 0.55rem 0.65rem;
+}
+
+.session-state {
+  margin: 0.35rem 0 0;
+  color: #334155;
+}
+
+.panel {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.panel h3 {
+  margin-top: 0;
+}
+
+.metric {
+  font-size: 1.75rem;
+  margin: 0.2rem 0;
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.progress-track {
+  margin-top: 0.6rem;
+  height: 10px;
+  background: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 40%;
+  height: 100%;
+  background: #2563eb;
+}
+
+.progress-fill.dynamic {
+  width: 0;
+}
+
+.trend-chart {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+  border: 1px solid #dbeafe;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.chart-axis {
+  stroke: #94a3b8;
+  stroke-width: 1;
+}
+
+.chart-line {
+  fill: none;
+  stroke: #2563eb;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.trend-meta {
+  margin-top: 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.score-bars {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.score-row {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.score-label {
+  display: flex;
+  justify-content: space-between;
+  color: #334155;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 800px) {
+  .wide-panel {
+    grid-column: span 1;
+  }
+}
